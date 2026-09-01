@@ -22,3 +22,23 @@
 ## 疑虑
 
 - 当前环境没有可连接的浏览器；无法执行简报要求的点击“沉默的羔羊”、播放实际 MP4、以及临时替换路径触发原生视频 `error` 的手工验收。代码已实现该事件处理，需在可用浏览器中补做此项验收。
+
+## 审查修复（2026-09-02）
+
+### 变更
+
+- `validateCatalog` 现在接受 `episodes: []` 的美剧，仍拒绝缺失或非数组的 `episodes`。
+- `getSeriesDetailPresentation` 提供详情页所需的唯一海报、与卡片一致的标题文字兜底、简介和剧集可用性；`renderSeriesDetail` 使用这些数据在选季/集控件前渲染海报和简介，并对海报加载失败使用同一兜底。
+- 返回媒体库时会清空播放器遗留的状态消息。
+- 新增空剧集片单、详情海报/简介/无剧集状态及无海报兜底的 Node 测试。
+
+### 覆盖测试
+
+- 红灯：`node --test tests/catalog.test.mjs`，`validateCatalog accepts a series with no episodes yet` 失败，错误为 `美剧缺少剧集`。
+- 绿灯：`node --test tests/catalog.test.mjs`，7/7 通过；`node --test tests/view.test.mjs`，3/3 通过。
+- 完整检查：`node --test tests/*.test.mjs && node --check src/catalog.js && node --check src/view.js && node --check src/main.js && git diff --check`。
+  输出：10 tests、10 pass、0 fail；三个语法检查及差异检查退出码均为 0。
+
+### 提交
+
+- 修复实现：`a6a1f9266993c80f4a5268c1256469dd5294ae95`（`fix(美剧详情): 展示海报简介并支持空剧集`）。
