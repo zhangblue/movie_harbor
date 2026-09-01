@@ -1,0 +1,24 @@
+export function buildMediaUrl(mediaDirectory, relativePath) {
+  const base = mediaDirectory.replace(/\/+$/, '');
+  const path = relativePath.replace(/^\/+/, '');
+  return `${base}/${path}`;
+}
+
+export function validateCatalog(items) {
+  if (!Array.isArray(items)) throw new Error('片单必须是数组');
+  const ids = new Set();
+  for (const item of items) {
+    if (!item?.id || !item?.title || !['movie', 'series'].includes(item.type) || ids.has(item.id)) {
+      throw new Error('片单条目无效');
+    }
+    ids.add(item.id);
+    if (item.type === 'movie' && typeof item.video !== 'string') throw new Error('电影缺少视频');
+    if (item.type === 'series' && (!Array.isArray(item.episodes) || item.episodes.length === 0)) throw new Error('美剧缺少剧集');
+    for (const episode of item.episodes ?? []) {
+      if (!Number.isInteger(episode.season) || episode.season < 1 || !Number.isInteger(episode.episode) || episode.episode < 1 || typeof episode.video !== 'string') {
+        throw new Error('剧集条目无效');
+      }
+    }
+  }
+  return items;
+}
