@@ -18,9 +18,12 @@ h1 { margin: 0; font-size: 1.7rem; }
 .empty-state { margin: 0; padding: 28px; border: 1px dashed #53617b; border-radius: 12px; color: #c6d1e5; text-align: center; }
 .series-detail, .player-detail { display: grid; gap: 18px; }
 .series-detail h2, .player-detail h2 { margin: 0; }
+.series-overview { display: grid; grid-template-columns: minmax(120px, 180px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.series-overview img, .series-overview .poster-fallback { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
+.series-description { margin: 0; color: #c6d1e5; line-height: 1.7; }
 .back-button, .season-controls button, .episode-controls button { width: fit-content; border: 1px solid #465168; border-radius: 8px; background: #1b2230; color: inherit; padding: 8px 12px; cursor: pointer; }
 .season-controls, .episode-controls { display: flex; flex-wrap: wrap; gap: 10px; }
 .season-controls .is-active { background: #d7e3ff; color: #13203b; border-color: #d7e3ff; }
 .player-detail video { width: 100%; max-height: 72vh; background: #000; border-radius: 12px; }
 #app-status { min-height: 1.5em; margin: 18px 0 0; }
-@media (max-width: 620px) { .app-shell { width: min(100% - 24px, 1120px); padding-top: 20px; } #site-header, .header-controls { align-items: stretch; flex-direction: column; } .search-control input { width: 100%; } }
+@media (max-width: 620px) { .app-shell { width: min(100% - 24px, 1120px); padding-top: 20px; } #site-header, .header-controls, .series-overview { align-items: stretch; flex-direction: column; } .series-overview { grid-template-columns: 1fr; } .series-overview img, .series-overview .poster-fallback { max-width: 180px; } .search-control input { width: 100%; } }

@@ -15,6 +15,7 @@ function showView(view) {
 }
 
 function render(items, mediaDirectory) {
+  status.textContent = '';
   showView(catalogView);
   renderHeader({
     activeType: state.activeType,
@@ -50,6 +51,7 @@ function openSeries(items, mediaDirectory, item) {
   renderSeriesDetail({
     container: detailView,
     item,
+    mediaDirectory,
     onBack: () => render(items, mediaDirectory),
     onOpenEpisode: (episode) => openPlayer(items, mediaDirectory, item, episode),
   });

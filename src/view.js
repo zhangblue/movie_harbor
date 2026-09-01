@@ -11,6 +11,15 @@ export function getCardPresentation(item) {
   };
 }
 
+export function getSeriesDetailPresentation(item) {
+  return {
+    poster: item.poster,
+    fallbackText: item.title,
+    description: item.description ?? '',
+    hasEpisodes: item.episodes.length > 0,
+  };
+}
+
 export function renderHeader({ activeType, query, onTypeChange, onSearch }) {
   const header = document.querySelector('#site-header');
   header.replaceChildren();
@@ -104,15 +113,33 @@ function createBackButton(onBack) {
   return button;
 }
 
-export function renderSeriesDetail({ container, item, onBack, onOpenEpisode }) {
+export function renderSeriesDetail({ container, item, mediaDirectory, onBack, onOpenEpisode }) {
   container.replaceChildren();
+  const presentation = getSeriesDetailPresentation(item);
   const heading = document.createElement('h2');
   heading.textContent = item.title;
   const content = document.createElement('div');
   content.className = 'series-detail';
   content.append(createBackButton(onBack), heading);
 
-  if (item.episodes.length === 0) {
+  const overview = document.createElement('div');
+  overview.className = 'series-overview';
+  if (presentation.poster) {
+    const poster = document.createElement('img');
+    poster.src = buildMediaUrl(mediaDirectory, presentation.poster);
+    poster.alt = `${item.title} 海报`;
+    poster.addEventListener('error', () => poster.replaceWith(createFallback(presentation.fallbackText)), { once: true });
+    overview.append(poster);
+  } else {
+    overview.append(createFallback(presentation.fallbackText));
+  }
+  const description = document.createElement('p');
+  description.className = 'series-description';
+  description.textContent = presentation.description;
+  overview.append(description);
+  content.append(overview);
+
+  if (!presentation.hasEpisodes) {
     const empty = document.createElement('p');
     empty.className = 'empty-state';
     empty.textContent = '暂未添加剧集';

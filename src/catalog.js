@@ -13,7 +13,7 @@ export function validateCatalog(items) {
     }
     ids.add(item.id);
     if (item.type === 'movie' && typeof item.video !== 'string') throw new Error('电影缺少视频');
-    if (item.type === 'series' && (!Array.isArray(item.episodes) || item.episodes.length === 0)) throw new Error('美剧缺少剧集');
+    if (item.type === 'series' && !Array.isArray(item.episodes)) throw new Error('美剧缺少剧集');
     for (const episode of item.episodes ?? []) {
       if (!Number.isInteger(episode.season) || episode.season < 1 || !Number.isInteger(episode.episode) || episode.episode < 1 || typeof episode.video !== 'string') {
         throw new Error('剧集条目无效');

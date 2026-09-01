@@ -23,6 +23,15 @@ test('validateCatalog accepts a movie and a series with episode videos', () => {
   assert.equal(result.length, 2);
 });
 
+test('validateCatalog accepts a series with no episodes yet', () => {
+  const result = validateCatalog([
+    { id: 'unreleased-show', type: 'series', title: '待播美剧', episodes: [] },
+  ]);
+  assert.deepEqual(result, [
+    { id: 'unreleased-show', type: 'series', title: '待播美剧', episodes: [] },
+  ]);
+});
+
 const items = [
   { id: 'film', type: 'movie', title: '沉默的羔羊', video: 'a.mp4' },
   { id: 'show', type: 'series', title: '绝命毒师', episodes: [
