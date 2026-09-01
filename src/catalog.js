@@ -12,10 +12,10 @@ export function validateCatalog(items) {
       throw new Error('片单条目无效');
     }
     ids.add(item.id);
-    if (item.type === 'movie' && typeof item.video !== 'string') throw new Error('电影缺少视频');
+    if (item.type === 'movie' && item.video != null && typeof item.video !== 'string') throw new Error('电影视频无效');
     if (item.type === 'series' && !Array.isArray(item.episodes)) throw new Error('美剧缺少剧集');
     for (const episode of item.episodes ?? []) {
-      if (!Number.isInteger(episode.season) || episode.season < 1 || !Number.isInteger(episode.episode) || episode.episode < 1 || typeof episode.video !== 'string') {
+      if (!episode || !Number.isInteger(episode.season) || episode.season < 1 || !Number.isInteger(episode.episode) || episode.episode < 1 || (episode.video != null && typeof episode.video !== 'string')) {
         throw new Error('剧集条目无效');
       }
     }
@@ -45,7 +45,11 @@ export function groupEpisodesBySeason(episodes) {
 }
 
 export function getPlayableSource(item, episode = null) {
-  if (item.type === 'movie' && episode === null) return item.video;
-  if (item.type === 'series' && episode !== null) return episode.video;
-  throw new Error('请选择可播放的视频');
+  let source;
+  if (item.type === 'movie' && episode === null) source = item.video;
+  else if (item.type === 'series' && episode !== null) source = episode.video;
+  else throw new Error('请选择可播放的视频');
+
+  if (typeof source !== 'string' || !source.trim()) throw new Error('没有可用的视频文件。');
+  return source.trim();
 }

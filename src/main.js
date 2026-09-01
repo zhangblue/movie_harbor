@@ -60,12 +60,18 @@ function openSeries(items, mediaDirectory, item) {
 
 function openPlayer(items, mediaDirectory, item, episode = null) {
   status.textContent = '';
+  let source = null;
+  try {
+    source = getPlayableSource(item, episode);
+  } catch (error) {
+    status.textContent = error.message;
+  }
   renderPlayer({
     container: playerView,
     item,
     episode,
     mediaDirectory,
-    source: getPlayableSource(item, episode),
+    source,
     onBack: () => episode ? openSeries(items, mediaDirectory, item) : render(items, mediaDirectory),
   });
   showView(playerView);

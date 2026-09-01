@@ -22,7 +22,18 @@ export function getSeriesDetailPresentation(item) {
 
 export function renderHeader({ activeType, query, onTypeChange, onSearch }) {
   const header = document.querySelector('#site-header');
-  header.replaceChildren();
+  const existingInput = header.querySelector('input');
+  if (existingInput) {
+    const scope = header.querySelector('.search-scope');
+    scope.textContent = typeLabels[activeType];
+    for (const button of header.querySelectorAll('.type-controls button')) {
+      const isActive = button.dataset.type === activeType;
+      button.className = isActive ? 'is-active' : '';
+      button.setAttribute('aria-pressed', String(isActive));
+    }
+    if (existingInput.value !== query) existingInput.value = query;
+    return;
+  }
 
   const brand = document.createElement('h1');
   brand.textContent = '电影港湾';
@@ -36,6 +47,7 @@ export function renderHeader({ activeType, query, onTypeChange, onSearch }) {
   for (const type of ['all', 'movie', 'series']) {
     const button = document.createElement('button');
     button.type = 'button';
+    button.dataset.type = type;
     button.textContent = typeLabels[type];
     button.className = type === activeType ? 'is-active' : '';
     button.setAttribute('aria-pressed', String(type === activeType));
@@ -45,6 +57,7 @@ export function renderHeader({ activeType, query, onTypeChange, onSearch }) {
   const search = document.createElement('label');
   search.className = 'search-control';
   const scope = document.createElement('span');
+  scope.className = 'search-scope';
   scope.textContent = typeLabels[activeType];
   const input = document.createElement('input');
   input.type = 'search';
@@ -193,13 +206,21 @@ export function renderPlayer({ container, item, episode = null, mediaDirectory, 
   content.className = 'player-detail';
   const heading = document.createElement('h2');
   heading.textContent = episode ? `${item.title} · 第 ${episode.episode} 集` : item.title;
-  const video = document.createElement('video');
-  video.controls = true;
-  video.playsInline = true;
-  video.src = buildMediaUrl(mediaDirectory, source);
-  video.addEventListener('error', () => {
-    document.querySelector('#app-status').textContent = '视频文件不可用或浏览器不支持该格式。';
-  });
-  content.append(createBackButton(onBack), heading, video);
+  content.append(createBackButton(onBack), heading);
+  if (typeof source !== 'string' || !source.trim()) {
+    const unavailable = document.createElement('p');
+    unavailable.className = 'empty-state';
+    unavailable.textContent = '没有可用的视频文件。';
+    content.append(unavailable);
+  } else {
+    const video = document.createElement('video');
+    video.controls = true;
+    video.playsInline = true;
+    video.src = buildMediaUrl(mediaDirectory, source);
+    video.addEventListener('error', () => {
+      document.querySelector('#app-status').textContent = '视频文件不可用或浏览器不支持该格式。';
+    });
+    content.append(video);
+  }
   container.append(content);
 }
