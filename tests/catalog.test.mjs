@@ -99,12 +99,16 @@ test('getPlayableSource clearly rejects a missing or empty video only when it is
   );
 });
 
-test('the default catalog ships a series episode backed by its bundled movie demo source', () => {
+test('the default catalog ships a series demo episode without a bundled video', () => {
   const catalog = JSON.parse(readFileSync(new URL('../data/movies.json', import.meta.url), 'utf8'));
-  const movie = catalog.find((item) => item.type === 'movie');
   const series = catalog.find((item) => item.type === 'series');
 
   assert.ok(series, '默认片单应包含美剧示例');
   assert.ok(series.episodes.length > 0, '美剧示例应包含可选剧集');
-  assert.equal(series.episodes[0].video, movie.video);
+  assert.equal(series.episodes[0].video, null);
+  assert.deepEqual(validateCatalog(catalog), catalog);
+  assert.throws(
+    () => getPlayableSource(series, series.episodes[0]),
+    /没有可用的视频文件/,
+  );
 });
