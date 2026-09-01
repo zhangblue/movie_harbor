@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   buildMediaUrl,
   filterCatalog,
+  getPlayableSource,
   groupEpisodesBySeason,
   validateCatalog,
 } from '../src/catalog.js';
@@ -41,4 +42,14 @@ test('groupEpisodesBySeason sorts seasons and episodes numerically', () => {
     { season: 1, episodes: [items[1].episodes[1]] },
     { season: 2, episodes: [items[1].episodes[0]] },
   ]);
+});
+
+test('getPlayableSource returns an item video and an episode video', () => {
+  assert.equal(getPlayableSource(items[0]), 'a.mp4');
+  assert.equal(getPlayableSource(items[1], items[1].episodes[0]), 's02e01.mp4');
+});
+
+test('getPlayableSource rejects invalid item and episode combinations', () => {
+  assert.throws(() => getPlayableSource(items[1]));
+  assert.throws(() => getPlayableSource(items[0], { video: 'episode.mp4' }));
 });

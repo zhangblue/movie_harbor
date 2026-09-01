@@ -43,3 +43,9 @@ export function groupEpisodesBySeason(episodes) {
       episodes: seasonEpisodes.sort((left, right) => left.episode - right.episode),
     }));
 }
+
+export function getPlayableSource(item, episode = null) {
+  if (item.type === 'movie' && episode === null) return item.video;
+  if (item.type === 'series' && episode !== null) return episode.video;
+  throw new Error('请选择可播放的视频');
+}

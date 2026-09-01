@@ -1,12 +1,21 @@
-import { filterCatalog, validateCatalog } from './catalog.js';
-import { renderCatalogCards, renderEmptyState, renderHeader } from './view.js';
+import { filterCatalog, getPlayableSource, validateCatalog } from './catalog.js';
+import { renderCatalogCards, renderEmptyState, renderHeader, renderPlayer, renderSeriesDetail } from './view.js';
 
 const state = { activeType: 'all', query: '', selectedItem: null };
 const header = document.querySelector('#site-header');
 const catalogView = document.querySelector('#catalog-view');
+const detailView = document.querySelector('#detail-view');
+const playerView = document.querySelector('#player-view');
 const status = document.querySelector('#app-status');
 
+function showView(view) {
+  catalogView.hidden = view !== catalogView;
+  detailView.hidden = view !== detailView;
+  playerView.hidden = view !== playerView;
+}
+
 function render(items, mediaDirectory) {
+  showView(catalogView);
   renderHeader({
     activeType: state.activeType,
     query: state.query,
@@ -30,9 +39,34 @@ function render(items, mediaDirectory) {
     mediaDirectory,
     onOpen(item) {
       state.selectedItem = item;
-      status.textContent = '播放与剧集详情将在后续版本提供。';
+      if (item.type === 'movie') openPlayer(items, mediaDirectory, item);
+      else openSeries(items, mediaDirectory, item);
     },
   });
+}
+
+function openSeries(items, mediaDirectory, item) {
+  status.textContent = '';
+  renderSeriesDetail({
+    container: detailView,
+    item,
+    onBack: () => render(items, mediaDirectory),
+    onOpenEpisode: (episode) => openPlayer(items, mediaDirectory, item, episode),
+  });
+  showView(detailView);
+}
+
+function openPlayer(items, mediaDirectory, item, episode = null) {
+  status.textContent = '';
+  renderPlayer({
+    container: playerView,
+    item,
+    episode,
+    mediaDirectory,
+    source: getPlayableSource(item, episode),
+    onBack: () => episode ? openSeries(items, mediaDirectory, item) : render(items, mediaDirectory),
+  });
+  showView(playerView);
 }
 
 async function loadCatalog() {
