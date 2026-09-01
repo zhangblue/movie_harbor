@@ -22,3 +22,24 @@ export function validateCatalog(items) {
   }
   return items;
 }
+
+export function filterCatalog(items, activeType, query) {
+  const normalizedQuery = query.trim().toLocaleLowerCase('zh-CN');
+  return items.filter((item) => {
+    const inActiveType = activeType === 'all' || item.type === activeType;
+    return inActiveType && item.title.toLocaleLowerCase('zh-CN').includes(normalizedQuery);
+  });
+}
+
+export function groupEpisodesBySeason(episodes) {
+  const seasons = new Map();
+  for (const episode of episodes) {
+    seasons.set(episode.season, [...(seasons.get(episode.season) ?? []), episode]);
+  }
+  return [...seasons.entries()]
+    .sort(([left], [right]) => left - right)
+    .map(([season, seasonEpisodes]) => ({
+      season,
+      episodes: seasonEpisodes.sort((left, right) => left.episode - right.episode),
+    }));
+}
