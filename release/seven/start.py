@@ -3,7 +3,9 @@
 import argparse
 import os
 import re
+import sys
 import webbrowser
+from datetime import datetime
 from functools import partial
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -38,6 +40,12 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
                 return str(self.resource_directory / "__not_found__")
             return str(target)
         return super().translate_path(path)
+
+    def log_message(self, format: str, *args) -> None:
+        """Write access logs with an ISO-like local timestamp and client IP."""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        message = format % args
+        print(f"[{timestamp}] {self.client_address[0]} {message}", file=sys.stderr)
 
     def end_headers(self) -> None:
         self.send_header("Accept-Ranges", "bytes")

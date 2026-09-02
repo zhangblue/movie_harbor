@@ -4,6 +4,7 @@ import sys
 import tempfile
 import threading
 import unittest
+from contextlib import redirect_stderr
 from pathlib import Path
 
 
@@ -206,6 +207,16 @@ class ReleaseServerTests(unittest.TestCase):
         self.assertEqual(response.getheader("Accept-Ranges"), "bytes")
         self.assertEqual(response.getheader("Content-Length"), "10")
         self.assertEqual(body, b"0123456789")
+
+    def test_access_log_includes_iso_timestamp_and_client_ip(self):
+        log_output = io.StringIO()
+        with redirect_stderr(log_output):
+            self.request()
+
+        self.assertRegex(
+            log_output.getvalue(),
+            r"^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] 127\.0\.0\.1 \"GET /movie_resources/movie\.mp4 HTTP/1\.1\" 200 -\n$",
+        )
 
     def test_server_routes_catalog_and_program_files_to_their_separate_directories(self):
         connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port)
