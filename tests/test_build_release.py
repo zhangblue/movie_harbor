@@ -1,4 +1,5 @@
 import http.client
+import io
 import sys
 import tempfile
 import threading
@@ -11,7 +12,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "release"))
 
 from build_release import build_release
-from start import create_server, parse_args
+from start import RangeRequestHandler, create_server, parse_args
 
 
 class BuildReleaseTests(unittest.TestCase):
@@ -199,6 +200,16 @@ class ReleaseServerTests(unittest.TestCase):
         self.assertTrue(arguments.no_scan)
         self.assertTrue(arguments.no_browser)
         self.assertEqual(arguments.port, 8765)
+
+    def test_range_copyfile_ignores_a_client_that_closes_while_seeking(self):
+        class ClosedClient:
+            def write(self, _chunk):
+                raise BrokenPipeError
+
+        handler = RangeRequestHandler.__new__(RangeRequestHandler)
+        handler._range = (0, 3)
+
+        handler.copyfile(io.BytesIO(b"0123"), ClosedClient())
 
 
 if __name__ == "__main__":

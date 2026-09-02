@@ -97,7 +97,10 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             chunk = source.read(min(64 * 1024, remaining))
             if not chunk:
                 break
-            outputfile.write(chunk)
+            try:
+                outputfile.write(chunk)
+            except (BrokenPipeError, ConnectionResetError):
+                return
             remaining -= len(chunk)
 
 
