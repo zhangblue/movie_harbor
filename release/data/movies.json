@@ -6,13 +6,13 @@
     "year": 1991,
     "genres": ["惊悚", "剧情"],
     "description": "一部心理惊悚电影。",
-    "poster": null,
-    "video": "沉默的羔羊.1080p.BD中英双字[66影视www.66Ys.Co].mp4"
+    "poster": "posters/沉默的羔羊.1080p.BD中英双字[66影视www.66Ys.Co].webp",
+    "video": "movies/沉默的羔羊.1080p.BD中英双字[66影视www.66Ys.Co].mp4"
   },
   {
-    "id": "series-demo",
+    "id": "a-song-of-ice-and-fire",
     "type": "series",
-    "title": "美剧演示：第一季",
+    "title": "权利的游戏：第一季",
     "year": 1991,
     "description": "演示条目：用于验证美剧详情和选集流程，未随站点附带视频文件。",
     "poster": null,
