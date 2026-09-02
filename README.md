@@ -1,116 +1,138 @@
 # 电影港湾
 
-这是一个通过浏览器浏览、搜索和播放本地电影与美剧文件的静态媒体库。请使用静态文件服务器运行它，不能直接双击打开 `index.html`。
+电影港湾是个人本地媒体库网站：展示收藏的电影与美剧，支持分类搜索、选集和浏览器播放。无需登录、数据库或云端服务。
 
-## 运行
+项目包含可复制的 `release/` 运行包。它使用 Python 标准库扫描本地视频、更新片单，并通过 HTTP Range 分段响应支持大 MP4 拖动进度条。
 
-在项目根目录执行：
+## 快速启动
 
-```bash
-python3 -m http.server 8000
-```
-
-然后在浏览器中打开 `http://localhost:8000`。
-
-## 构建可分发版本
-
-在项目根目录执行：
-
-```bash
-python3 tools/build_release.py
-```
-
-该命令会生成完整的 `release/` 目录；复制整个目录到另一台机器后，仍可作为独立的本地媒体库使用。构建只会替换 `release/` 中由构建器管理的站点文件、启动脚本和媒体目录，不会删除其中的其他文件。
-
-将媒体文件放入 `release/movie_resources/` 后，可先单独刷新片单：
-
-```bash
-python3 release/scan_library.py
-```
-
-或者直接启动本地服务；默认会先刷新片单，再在浏览器中打开页面：
+推荐运行发布包：
 
 ```bash
 python3 release/start.py
 ```
 
-自动化场景或已经刷新过片单时，可以跳过扫描和打开浏览器，并指定端口：
+它会扫描媒体库、更新 `release/data/movies.json`，并在 `http://127.0.0.1:8000` 启动网站。
 
 ```bash
+# 跳过扫描、不自动打开浏览器、使用 8010 端口
 python3 release/start.py --no-scan --no-browser --port 8010
 ```
 
-扫描以现有片单为基础增量合并：它会保留人工填写的标题、简介、年份、海报和剧集信息，仅更新可发现的视频路径；媒体文件消失时，对应电影或剧集条目的 `video` 会变为 `null`，不会删除人工数据。
+不要使用 `python3 -m http.server` 播放视频；它不提供本项目所需的 Range 分段处理。
 
-如果拿到的是已复制的 `release/` 目录，请进入该目录后运行同名脚本：
+## 工程结构
+
+```text
+config.json                 # 开发目录媒体配置
+data/movies.json            # 开发片单
+movie_resources/            # 本地视频与海报（默认不提交 Git）
+index.html / src/ / styles/ # 前端网站
+release/                    # 可直接复制和运行的发布包
+  start.py                  # 扫描并启动本地 Range 服务
+  scan_library.py           # 增量扫描器
+  config.json
+  data/movies.json
+  movie_resources/
+tools/build_release.py      # 生成/刷新 release 的构建脚本
+```
+
+## 构建与发布
+
+修改前端、扫描器或配置后，运行：
 
 ```bash
-cd release
-python3 scan_library.py
-python3 start.py --port 8010
+python3 tools/build_release.py
 ```
+
+该命令刷新 `release/` 的运行时文件。复制整个 `release/` 目录到另一台电脑后，进入该目录执行：
+
+```bash
+python3 start.py
+```
+
+请一并保留或填充 `release/movie_resources/`，其中是实际本地媒体文件。
 
 ## 配置媒体目录
 
-`config.json` 中的 `mediaDirectory` 必须是相对于项目根目录、且由这个静态服务器公开的目录，例如：
+编辑 `release/config.json`：
 
 ```json
 { "mediaDirectory": "./movie_resources" }
 ```
 
-浏览器不能安全地扫描任意绝对本机路径，因此不要填入 `/Users/...`、`C:\\...` 等绝对目录。将媒体文件放入项目中的 `movie_resources/`（或另一个相对目录）后，再在片单中引用它们。
+路径必须相对于 `release/`，不能填写 `/Users/...`、`C:\...` 等绝对路径。
 
-## 添加电影与海报
+## 添加电影、美剧和海报
 
-1. 将电影视频放到媒体目录中的任意子目录，例如 `movie_resources/movies/my-film.mp4`。
-2. 将海报放到媒体目录中，例如 `movie_resources/posters/my-film.jpg`。
-3. 在 `data/movies.json` 中添加电影条目。`video` 和 `poster` 都是相对于 `mediaDirectory` 的路径：
+按目录约定放置资源：
+
+```text
+release/movie_resources/
+├── movies/
+│   └── 星际穿越.mp4
+├── series/
+│   └── 绝命毒师/
+│       ├── S01E01.mp4
+│       └── S01E02.mp4
+└── posters/
+    ├── movie-星际穿越.jpg
+    └── series-绝命毒师.jpg
+```
+
+视频支持 `.mp4`、`.webm`、`.mov`；海报支持 `.jpg`、`.png`、`.webp`。文件名 `S01E02` 自动识别为第 1 季第 2 集；未匹配的剧集文件会按文件名字典序归入第 1 季。
+
+更新片单：
+
+```bash
+python3 release/scan_library.py
+```
+
+扫描器会新增影片、更新视频路径，保留人工填写的标题、简介、年份、类型和海报。已删除的视频会标为 `null`，影片资料不会被删除。若发现同名媒体、重复季集或 `S00E01` 这类无效编号，会停止并报告冲突，防止丢失数据。
+
+## 片单格式
+
+`release/data/movies.json` 可手动维护；`video`、`poster` 均相对于 `mediaDirectory`。
 
 ```json
 {
-  "id": "my-film",
+  "id": "movie-interstellar",
   "type": "movie",
-  "title": "我的电影",
-  "year": 2026,
-  "poster": "posters/my-film.jpg",
-  "video": "movies/my-film.mp4"
+  "title": "星际穿越",
+  "year": 2014,
+  "poster": "posters/movie-interstellar.jpg",
+  "video": "movies/星际穿越.mp4"
 }
 ```
 
-没有海报时可将 `poster` 设为 `null`，页面会显示片名占位封面。
-
-## 添加美剧与剧集
-
-一部美剧只需要一张海报。建议把视频按剧集放在独立目录中，例如：
-
-```text
-movie_resources/
-  posters/my-series.jpg
-  series/my-series/s01e01.mp4
-  series/my-series/s01e02.mp4
-```
-
-在 `data/movies.json` 中使用 `episodes` 数组定义剧集；每个对象的 `season`、`episode` 为数字，`video` 为相对于 `mediaDirectory` 的视频路径：
-
 ```json
 {
-  "id": "my-series",
+  "id": "series-breaking-bad",
   "type": "series",
-  "title": "我的美剧",
-  "poster": "posters/my-series.jpg",
+  "title": "绝命毒师",
+  "poster": "posters/series-breaking-bad.jpg",
   "episodes": [
-    { "season": 1, "episode": 1, "title": "第一集", "video": "series/my-series/s01e01.mp4" },
-    { "season": 1, "episode": 2, "title": "第二集", "video": "series/my-series/s01e02.mp4" }
+    { "season": 1, "episode": 1, "title": "第一集", "video": "series/绝命毒师/S01E01.mp4" }
   ]
 }
 ```
 
-尚未添加剧集时可使用空数组：`"episodes": []`。
+海报或视频尚未准备好时可设为 `null`；网站保留条目并在打开时说明视频不可用。
 
-## 默认演示美剧
+## 播放排查
 
-默认片单还带有“美剧演示：第一季”，用于检查“美剧”分类、详情页和选集流程。该示例**没有随站点附带视频文件**；打开第一集会显示“没有可用的视频文件。”提示。添加自己的美剧时，请按上方格式将该集的 `video` 替换为实际剧集视频路径。
+拖动进度条时服务会返回 `206 Partial Content`。浏览器取消旧分段请求属于正常行为，服务端会安全忽略。
 
-## 无法播放时
+无法播放时依次检查：
 
-先确认视频文件确实位于 `mediaDirectory` 下，且片单路径大小写和文件名完全一致。若页面提示浏览器不支持该格式，通常是视频编码不受当前浏览器支持；可尝试使用 H.264 视频与 AAC 音频编码的 MP4 文件，或改用支持该媒体编码的浏览器。也可在浏览器开发者工具的网络面板中确认视频请求没有返回 404。
+1. 使用 `python3 release/start.py` 启动。
+2. 片单视频路径与 `release/movie_resources/` 的文件名完全一致。
+3. 终端没有 404 或扫描错误。
+4. 视频使用浏览器兼容编码；推荐 H.264 视频 + AAC 音频的 MP4。
+
+## 测试
+
+```bash
+python3 -m unittest tests/test_scan_library.py tests/test_build_release.py -v
+node --test
+```
