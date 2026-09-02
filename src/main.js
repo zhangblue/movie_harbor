@@ -1,5 +1,5 @@
 import { filterCatalog, getPlayableSource, validateCatalog } from './catalog.js';
-import { renderCatalogCards, renderEmptyState, renderHeader, renderPlayer, renderSeriesDetail } from './view.js';
+import { releasePlayer, renderCatalogCards, renderEmptyState, renderHeader, renderPlayer, renderSeriesDetail } from './view.js';
 
 const state = { activeType: 'all', query: '', selectedItem: null };
 const header = document.querySelector('#site-header');
@@ -72,7 +72,11 @@ function openPlayer(items, mediaDirectory, item, episode = null) {
     episode,
     mediaDirectory,
     source,
-    onBack: () => episode ? openSeries(items, mediaDirectory, item) : render(items, mediaDirectory),
+    onBack: () => {
+      releasePlayer(playerView);
+      if (episode) openSeries(items, mediaDirectory, item);
+      else render(items, mediaDirectory);
+    },
   });
   showView(playerView);
 }

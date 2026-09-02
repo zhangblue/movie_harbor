@@ -224,3 +224,12 @@ export function renderPlayer({ container, item, episode = null, mediaDirectory, 
   }
   container.append(content);
 }
+
+export function releasePlayer(container) {
+  for (const video of container.querySelectorAll('video')) {
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+  }
+  container.replaceChildren();
+}

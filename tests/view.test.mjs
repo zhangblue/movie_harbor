@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getCardPresentation, getSeriesDetailPresentation, renderHeader, renderPlayer } from '../src/view.js';
+import { getCardPresentation, getSeriesDetailPresentation, releasePlayer, renderHeader, renderPlayer } from '../src/view.js';
 
 class FakeElement {
   constructor(tagName) {
@@ -140,5 +140,32 @@ test('renderPlayer shows an unavailable state instead of creating a broken video
 
     assert.equal(container.querySelector('video'), null);
     assert.ok(container.querySelector('p'));
+  });
+});
+
+test('releasePlayer stops and detaches active video before leaving the player view', () => {
+  withFakeDocument(() => {
+    const container = new FakeElement('section');
+    renderPlayer({
+      container,
+      item: { type: 'movie', title: '正在播放的电影' },
+      mediaDirectory: './movie_resources',
+      source: 'movies/playing.mp4',
+      onBack() {},
+    });
+    const video = container.querySelector('video');
+    let paused = false;
+    let sourceRemoved = false;
+    let reloaded = false;
+    video.pause = () => { paused = true; };
+    video.removeAttribute = (name) => { sourceRemoved = name === 'src'; };
+    video.load = () => { reloaded = true; };
+
+    releasePlayer(container);
+
+    assert.equal(paused, true);
+    assert.equal(sourceRemoved, true);
+    assert.equal(reloaded, true);
+    assert.equal(container.children.length, 0);
   });
 });
