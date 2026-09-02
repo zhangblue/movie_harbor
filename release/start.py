@@ -1,4 +1,4 @@
-"""Start a local release server, optionally refreshing its media catalog first."""
+"""Start a local release server."""
 
 import argparse
 import os
@@ -9,9 +9,6 @@ from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import BinaryIO, Optional, Tuple
-
-import scan_library
-
 
 BYTE_RANGE_PATTERN = re.compile(r"bytes=(\d*)-(\d*)$")
 
@@ -111,8 +108,7 @@ def create_server(root: Path, port: int) -> ThreadingHTTPServer:
 
 
 def parse_args(arguments: Optional[list[str]] = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Refresh and serve a local media library release.")
-    parser.add_argument("--no-scan", action="store_true", help="Do not refresh data/movies.json before serving")
+    parser = argparse.ArgumentParser(description="Serve a local media library release.")
     parser.add_argument("--port", type=int, default=8000, help="Loopback port to listen on (default: 8000)")
     parser.add_argument("--no-browser", action="store_true", help="Do not open the site in a browser")
     return parser.parse_args(arguments)
@@ -121,9 +117,6 @@ def parse_args(arguments: Optional[list[str]] = None) -> argparse.Namespace:
 def main() -> None:
     arguments = parse_args()
     release_root = Path(__file__).resolve().parent
-    if not arguments.no_scan:
-        scan_library.main(release_root)
-
     server = create_server(release_root, arguments.port)
     url = f"http://127.0.0.1:{server.server_port}"
     print(f"Serving release at {url}")
