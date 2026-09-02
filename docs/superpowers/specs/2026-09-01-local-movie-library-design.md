@@ -100,3 +100,19 @@ movie_resources/
 - 电影可进入相应播放器；美剧可进入详情并选择集播放。
 - 海报、视频、配置和片单异常分别呈现约定的兜底状态。
 - 桌面和手机宽度下，导航、搜索、网格、详情与播放器都可用。
+
+## 发布包与增量扫描
+
+发布产物位于项目根目录的 `release/`。它是可复制的独立目录，包含静态站点文件、`config.json`、`data/movies.json`、`start.py`、`scan_library.py` 与使用说明；`movie_resources/` 作为用户维护的媒体目录一并保留在发布目录中。
+
+`start.py` 不依赖第三方 Python 包。默认行为是调用扫描器，然后在本机启动静态 HTTP 服务；`--no-scan` 仅启动服务，不更改片单。`scan_library.py` 也可独立执行，以扫描媒体库并增量更新 `data/movies.json`。
+
+扫描约定如下：
+
+- `movie_resources/movies/` 下的 `.mp4`、`.webm`、`.mov` 文件是电影。
+- `movie_resources/series/<剧名>/` 下的同类文件是该剧的剧集。文件名含 `S01E02`（不区分大小写）时，扫描器读取季号 1、集号 2；未匹配时按文件名字典序分配到第 1 季的后续集号。
+- `movie_resources/posters/<id>.jpg`、`.png` 或 `.webp` 是对应条目的本地海报。扫描器优先按该顺序选择已有海报。
+- 扫描器以稳定的、从相对路径规范化而来的 `id` 匹配已有条目。新发现的资源新增为最小可用条目；已存在条目的 `title`、`year`、`genres`、`description`、`poster` 与 `type` 保持原样，只更新由扫描器管理的视频路径和剧集列表。
+- 媒体文件消失时，扫描器不删除条目，而是将相应电影 `video` 或剧集 `video` 设为 `null`，使网站保留元信息并在播放时显示文件不可用提示。
+
+发布验证包括：从干净的 `release/` 目录运行 `python3 start.py --no-browser`，确认扫描器新增电影/美剧、不覆盖人工元数据、将移除视频标记为不可用，并能在浏览器访问启动后的本地站点。
