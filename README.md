@@ -83,29 +83,28 @@ release/movie_resources/
 
 ## 片单格式
 
-`release/data/movies.json` 可手动维护；`video`、`poster` 均相对于 `mediaDirectory`。
+`release/data/movies.json` 是顶层数组；`video`、`poster` 均相对于 `mediaDirectory`。可直接复制以下示例后按实际媒体修改：
 
 ```json
-{
-  "id": "movie-interstellar",
-  "type": "movie",
-  "title": "星际穿越",
-  "year": 2014,
-  "poster": "posters/movie-interstellar.jpg",
-  "video": "movies/星际穿越.mp4"
-}
-```
-
-```json
-{
-  "id": "series-breaking-bad",
-  "type": "series",
-  "title": "绝命毒师",
-  "poster": "posters/series-breaking-bad.jpg",
-  "episodes": [
-    { "season": 1, "episode": 1, "title": "第一集", "video": "series/绝命毒师/S01E01.mp4" }
-  ]
-}
+[
+  {
+    "id": "movie-interstellar",
+    "type": "movie",
+    "title": "星际穿越",
+    "year": 2014,
+    "poster": "posters/movie-interstellar.jpg",
+    "video": "movies/星际穿越.mp4"
+  },
+  {
+    "id": "series-breaking-bad",
+    "type": "series",
+    "title": "绝命毒师",
+    "poster": "posters/series-breaking-bad.jpg",
+    "episodes": [
+      { "season": 1, "episode": 1, "title": "第一集", "video": "series/绝命毒师/S01E01.mp4" }
+    ]
+  }
+]
 ```
 
 海报或视频尚未准备好时可设为 `null`；网站保留条目并在打开时说明视频不可用。
