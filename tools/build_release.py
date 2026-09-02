@@ -8,7 +8,8 @@ from pathlib import Path
 
 RUNTIME_FILES = ("index.html", "config.json", "README.md")
 RUNTIME_DIRECTORIES = ("data", "src", "styles", "movie_resources")
-RUNTIME_SCRIPTS = ("start.py", "scan_library.py")
+RUNTIME_SCRIPTS = ("start.py",)
+OBSOLETE_RUNTIME_FILES = ("scan_library.py",)
 
 
 def _validate_destination(source_root: Path, destination: Path) -> tuple[Path, Path]:
@@ -49,7 +50,7 @@ def _stage_runtime(source_root: Path, staging: Path) -> None:
 
 
 def _remove_generated_output(destination: Path) -> None:
-    for relative_path in (*RUNTIME_FILES, *RUNTIME_DIRECTORIES, *RUNTIME_SCRIPTS):
+    for relative_path in (*RUNTIME_FILES, *RUNTIME_DIRECTORIES, *RUNTIME_SCRIPTS, *OBSOLETE_RUNTIME_FILES):
         output = destination / relative_path
         if output.is_symlink() or output.is_file():
             output.unlink()

@@ -16,7 +16,7 @@ from start import RangeRequestHandler, create_server, parse_args
 
 
 class BuildReleaseTests(unittest.TestCase):
-    def test_build_release_copies_runtime_files_and_media(self):
+    def test_build_release_does_not_ship_a_scanner(self):
         with tempfile.TemporaryDirectory() as temporary:
             source = Path(temporary) / "source"
             destination = Path(temporary) / "release"
@@ -35,11 +35,13 @@ class BuildReleaseTests(unittest.TestCase):
             (source / "release" / "scan_library.py").write_text("# scanner", encoding="utf-8")
             (source / "movie_resources" / "movies" / "film.mp4").write_bytes(b"video")
             (source / "README.md").write_text("# Movie Harbor", encoding="utf-8")
+            destination.mkdir()
+            (destination / "scan_library.py").write_text("# stale scanner", encoding="utf-8")
 
             build_release(source, destination)
 
             self.assertTrue((destination / "start.py").is_file())
-            self.assertTrue((destination / "scan_library.py").is_file())
+            self.assertFalse((destination / "scan_library.py").exists())
             self.assertTrue((destination / "config.json").is_file())
             self.assertTrue((destination / "movie_resources" / "movies" / "film.mp4").is_file())
             self.assertEqual((destination / "src" / "main.js").read_text(encoding="utf-8"), "console.log('ready')")
@@ -53,7 +55,7 @@ class BuildReleaseTests(unittest.TestCase):
             (source / "styles").mkdir()
             (source / "release").mkdir()
             (source / "movie_resources").mkdir()
-            for relative_path in ("index.html", "config.json", "README.md", "data/movies.json", "src/main.js", "styles/main.css", "release/start.py", "release/scan_library.py"):
+            for relative_path in ("index.html", "config.json", "README.md", "data/movies.json", "src/main.js", "styles/main.css", "release/start.py"):
                 path = source / relative_path
                 path.write_text(relative_path, encoding="utf-8")
             (destination / "data").mkdir(parents=True)
@@ -74,7 +76,7 @@ class BuildReleaseTests(unittest.TestCase):
             (source / "src").mkdir()
             (source / "styles").mkdir()
             (source / "release").mkdir()
-            for relative_path in ("index.html", "config.json", "README.md", "data/movies.json", "src/main.js", "styles/main.css", "release/start.py", "release/scan_library.py"):
+            for relative_path in ("index.html", "config.json", "README.md", "data/movies.json", "src/main.js", "styles/main.css", "release/start.py"):
                 (source / relative_path).write_text(relative_path, encoding="utf-8")
 
             build_release(source, destination)
@@ -90,13 +92,13 @@ class BuildReleaseTests(unittest.TestCase):
             (source / "styles").mkdir()
             (source / "movie_resources").mkdir()
             destination.mkdir()
-            for relative_path in ("index.html", "config.json", "README.md", "data/movies.json", "src/main.js", "styles/main.css", "release/start.py", "release/scan_library.py"):
+            for relative_path in ("index.html", "config.json", "README.md", "data/movies.json", "src/main.js", "styles/main.css", "release/start.py"):
                 (source / relative_path).write_text(relative_path, encoding="utf-8")
 
             build_release(source, destination)
 
             self.assertEqual((destination / "start.py").read_text(encoding="utf-8"), "release/start.py")
-            self.assertEqual((destination / "scan_library.py").read_text(encoding="utf-8"), "release/scan_library.py")
+            self.assertFalse((destination / "scan_library.py").exists())
             self.assertTrue((destination / "movie_resources").is_dir())
 
     def test_build_release_rejects_unsafe_destinations(self):
@@ -194,10 +196,10 @@ class ReleaseServerTests(unittest.TestCase):
         self.assertEqual(response.getheader("Content-Length"), "10")
         self.assertEqual(body, b"0123456789")
 
-    def test_start_arguments_allow_automation_without_scan_or_browser(self):
-        arguments = parse_args(["--no-scan", "--no-browser", "--port", "8765"])
+    def test_start_arguments_do_not_offer_a_scan_switch(self):
+        arguments = parse_args(["--no-browser", "--port", "8765"])
 
-        self.assertTrue(arguments.no_scan)
+        self.assertFalse(hasattr(arguments, "no_scan"))
         self.assertTrue(arguments.no_browser)
         self.assertEqual(arguments.port, 8765)
 
