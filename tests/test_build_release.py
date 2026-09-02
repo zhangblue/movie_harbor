@@ -134,6 +134,17 @@ class ReleaseServerTests(unittest.TestCase):
         connection.close()
         return response, body
 
+    def request_with_duplicate_range_headers(self):
+        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port)
+        connection.putrequest("GET", "/movie.mp4")
+        connection.putheader("Range", "bytes=0-1")
+        connection.putheader("Range", "bytes=2-3")
+        connection.endheaders()
+        response = connection.getresponse()
+        body = response.read()
+        connection.close()
+        return response, body
+
     def test_server_returns_single_byte_range_with_streaming_headers(self):
         response, body = self.request({"Range": "bytes=2-2"})
 
@@ -165,6 +176,14 @@ class ReleaseServerTests(unittest.TestCase):
             self.assertEqual(response.status, 416)
             self.assertEqual(response.getheader("Content-Range"), "bytes */10")
             self.assertEqual(body, b"")
+
+    def test_server_rejects_duplicate_raw_http_range_headers(self):
+        response, body = self.request_with_duplicate_range_headers()
+
+        self.assertEqual(response.status, 416)
+        self.assertEqual(response.getheader("Content-Range"), "bytes */10")
+        self.assertEqual(response.getheader("Content-Length"), "0")
+        self.assertEqual(body, b"")
 
     def test_server_advertises_ranges_for_full_media_responses(self):
         response, body = self.request()

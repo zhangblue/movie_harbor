@@ -61,9 +61,9 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             return None
 
         size = os.fstat(file.fileno()).st_size
-        requested_range = self.headers.get("Range")
-        if requested_range is not None:
-            selected_range = self._parse_range(requested_range, size)
+        requested_ranges = self.headers.get_all("Range")
+        if requested_ranges is not None:
+            selected_range = self._parse_range(requested_ranges[0], size) if len(requested_ranges) == 1 else None
             if selected_range is None:
                 file.close()
                 self.send_response(HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE)
