@@ -119,7 +119,7 @@ class ReleaseServerTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
         (self.root / "movie.mp4").write_bytes(b"0123456789")
-        self.server = create_server(self.root, 0)
+        self.server = create_server(self.root, "127.0.0.1", 0)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
 
@@ -202,6 +202,10 @@ class ReleaseServerTests(unittest.TestCase):
         self.assertFalse(hasattr(arguments, "no_scan"))
         self.assertTrue(arguments.no_browser)
         self.assertEqual(arguments.port, 8765)
+
+    def test_start_host_defaults_to_loopback_and_accepts_lan_binding(self):
+        self.assertEqual(parse_args([]).host, "127.0.0.1")
+        self.assertEqual(parse_args(["--host", "0.0.0.0"]).host, "0.0.0.0")
 
     def test_range_copyfile_ignores_a_client_that_closes_while_seeking(self):
         class ClosedClient:
