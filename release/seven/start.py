@@ -9,14 +9,35 @@ from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import BinaryIO, Optional, Tuple
+from urllib.parse import unquote, urlsplit
 
 BYTE_RANGE_PATTERN = re.compile(r"bytes=(\d*)-(\d*)$")
 
 
 class RangeRequestHandler(SimpleHTTPRequestHandler):
-    """Serve static files and honor one RFC 7233 byte range per request."""
+    """Serve program files and persistent resources with byte-range support."""
 
     _range: Optional[Tuple[int, int]] = None
+
+    def __init__(self, *args, resource_directory: str, **kwargs) -> None:
+        self.resource_directory = Path(resource_directory).resolve()
+        super().__init__(*args, **kwargs)
+
+    def translate_path(self, path: str) -> str:
+        """Map public resource URLs outside the replaceable seven directory."""
+        request_path = unquote(urlsplit(path).path)
+        if request_path == "/config.json":
+            return str(self.resource_directory / "config.json")
+        if request_path == "/data/movies.json":
+            return str(self.resource_directory / "movies.json")
+        if request_path.startswith("/movie_resources/"):
+            target = (self.resource_directory / request_path.removeprefix("/movie_resources/")).resolve()
+            try:
+                target.relative_to(self.resource_directory)
+            except ValueError:
+                return str(self.resource_directory / "__not_found__")
+            return str(target)
+        return super().translate_path(path)
 
     def end_headers(self) -> None:
         self.send_header("Accept-Ranges", "bytes")
@@ -35,7 +56,6 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
                 if suffix_length <= 0 or size == 0:
                     return None
                 return max(size - suffix_length, 0), size - 1
-
             start = int(first)
             if start >= size:
                 return None
@@ -49,14 +69,12 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
         path = self.translate_path(self.path)
         if os.path.isdir(path):
             return super().send_head()
-
         content_type = self.guess_type(path)
         try:
             file = open(path, "rb")
         except OSError:
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")
             return None
-
         size = os.fstat(file.fileno()).st_size
         requested_ranges = self.headers.get_all("Range")
         if requested_ranges is not None:
@@ -77,7 +95,6 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             file.seek(start)
             return file
-
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-type", content_type)
         self.send_header("Content-Length", str(size))
@@ -88,7 +105,6 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
         if self._range is None:
             super().copyfile(source, outputfile)
             return
-
         remaining = self._range[1] - self._range[0] + 1
         while remaining:
             chunk = source.read(min(64 * 1024, remaining))
@@ -101,9 +117,13 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             remaining -= len(chunk)
 
 
-def create_server(root: Path, host: str, port: int) -> ThreadingHTTPServer:
-    """Return a static server rooted at *root* and bound to *host*."""
-    handler = partial(RangeRequestHandler, directory=str(root))
+def create_server(release_root: Path, host: str, port: int) -> ThreadingHTTPServer:
+    """Return a server exposing seven and movie_resources as one website."""
+    handler = partial(
+        RangeRequestHandler,
+        directory=str(release_root / "seven"),
+        resource_directory=str(release_root / "movie_resources"),
+    )
     return ThreadingHTTPServer((host, port), handler)
 
 
@@ -117,7 +137,7 @@ def parse_args(arguments: Optional[list[str]] = None) -> argparse.Namespace:
 
 def main() -> None:
     arguments = parse_args()
-    release_root = Path(__file__).resolve().parent
+    release_root = Path(__file__).resolve().parents[1]
     server = create_server(release_root, arguments.host, arguments.port)
     display_host = "127.0.0.1" if arguments.host == "0.0.0.0" else arguments.host
     url = f"http://{display_host}:{server.server_port}"

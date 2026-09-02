@@ -1,4 +1,4 @@
-"""Build a portable copy of the local media library."""
+"""Build the replaceable-program part of a portable media library release."""
 
 import argparse
 import shutil
@@ -6,16 +6,14 @@ import tempfile
 from pathlib import Path
 
 
-RUNTIME_FILES = ("index.html", "config.json", "README.md")
-RUNTIME_DIRECTORIES = ("data", "src", "styles", "movie_resources")
-RUNTIME_SCRIPTS = ("start.py",)
-OBSOLETE_RUNTIME_FILES = ("scan_library.py",)
+PROGRAM_FILES = ("index.html", "README.md")
+PROGRAM_DIRECTORIES = ("src", "styles")
+RESOURCE_FILES = (("config.json", "config.json"), ("data/movies.json", "movies.json"))
 
 
 def _validate_destination(source_root: Path, destination: Path) -> tuple[Path, Path]:
     if not str(destination) or destination == Path():
         raise ValueError("destination must not be empty")
-
     resolved_source = source_root.resolve()
     resolved_destination = destination.resolve()
     if resolved_destination == resolved_destination.parent:
@@ -25,57 +23,72 @@ def _validate_destination(source_root: Path, destination: Path) -> tuple[Path, P
     return resolved_source, resolved_destination
 
 
-def _stage_runtime(source_root: Path, staging: Path) -> None:
-    for relative_path in RUNTIME_FILES:
+def _stage_release(source_root: Path, staging: Path) -> None:
+    program_root = staging / "seven"
+    resources_root = staging / "movie_resources"
+    program_root.mkdir()
+    resources_root.mkdir()
+    for relative_path in PROGRAM_FILES:
         source = source_root / relative_path
         if not source.is_file():
             raise FileNotFoundError(source)
-        shutil.copy2(source, staging / relative_path)
-
-    for relative_path in RUNTIME_DIRECTORIES:
+        shutil.copy2(source, program_root / relative_path)
+    for relative_path in PROGRAM_DIRECTORIES:
         source = source_root / relative_path
-        if relative_path == "movie_resources" and not source.exists():
-            (staging / relative_path).mkdir()
-            continue
         if not source.is_dir():
             raise FileNotFoundError(source)
-        shutil.copytree(source, staging / relative_path)
+        shutil.copytree(source, program_root / relative_path)
+    starter = source_root / "release" / "seven" / "start.py"
+    if not starter.is_file():
+        raise FileNotFoundError(starter)
+    shutil.copy2(starter, program_root / "start.py")
 
-    for script_name in RUNTIME_SCRIPTS:
-        source = source_root / "release" / script_name
+    source_media = source_root / "movie_resources"
+    if source_media.exists():
+        if not source_media.is_dir():
+            raise NotADirectoryError(source_media)
+        shutil.copytree(source_media, resources_root, dirs_exist_ok=True)
+    for source_relative_path, target_name in RESOURCE_FILES:
+        source = source_root / source_relative_path
         if not source.is_file():
             raise FileNotFoundError(source)
-        (staging / "release").mkdir(exist_ok=True)
-        shutil.copy2(source, staging / "release" / script_name)
+        shutil.copy2(source, resources_root / target_name)
 
 
-def _remove_generated_output(destination: Path) -> None:
-    for relative_path in (*RUNTIME_FILES, *RUNTIME_DIRECTORIES, *RUNTIME_SCRIPTS, *OBSOLETE_RUNTIME_FILES):
-        output = destination / relative_path
-        if output.is_symlink() or output.is_file():
-            output.unlink()
-        elif output.is_dir():
-            shutil.rmtree(output)
+def _replace_program_directory(staging: Path, destination: Path) -> None:
+    program_destination = destination / "seven"
+    if program_destination.is_symlink() or program_destination.is_file():
+        program_destination.unlink()
+    elif program_destination.is_dir():
+        shutil.rmtree(program_destination)
+    shutil.copytree(staging / "seven", program_destination)
+
+
+def _seed_resources_if_needed(staging: Path, destination: Path) -> None:
+    resource_destination = destination / "movie_resources"
+    if not resource_destination.exists():
+        shutil.copytree(staging / "movie_resources", resource_destination)
+        return
+    if not resource_destination.is_dir():
+        raise NotADirectoryError(resource_destination)
+    # User media is never replaced. Only seed files absent from older releases.
+    for _source_relative_path, target_name in RESOURCE_FILES:
+        target = resource_destination / target_name
+        if not target.exists():
+            shutil.copy2(staging / "movie_resources" / target_name, target)
 
 
 def build_release(source_root: Path, destination: Path) -> None:
-    """Copy the runtime and local media from *source_root* into *destination*."""
+    """Build *destination*/seven without replacing the local media library."""
     source_root, destination = _validate_destination(source_root, destination)
     if not source_root.is_dir():
         raise FileNotFoundError(source_root)
-
     with tempfile.TemporaryDirectory() as temporary:
         staging = Path(temporary)
-        _stage_runtime(source_root, staging)
+        _stage_release(source_root, staging)
         destination.mkdir(parents=True, exist_ok=True)
-        _remove_generated_output(destination)
-
-        for relative_path in RUNTIME_FILES:
-            shutil.copy2(staging / relative_path, destination / relative_path)
-        for relative_path in RUNTIME_DIRECTORIES:
-            shutil.copytree(staging / relative_path, destination / relative_path)
-        for script_name in RUNTIME_SCRIPTS:
-            shutil.copy2(staging / "release" / script_name, destination / script_name)
+        _replace_program_directory(staging, destination)
+        _seed_resources_if_needed(staging, destination)
 
 
 def main() -> None:
@@ -85,7 +98,7 @@ def main() -> None:
     source_root = Path(__file__).resolve().parents[1]
     destination = arguments.output if arguments.output is not None else source_root / "release"
     build_release(source_root, destination)
-    print(f"Built release in {destination}")
+    print(f"Built release program in {destination / 'seven'}")
 
 
 if __name__ == "__main__":
