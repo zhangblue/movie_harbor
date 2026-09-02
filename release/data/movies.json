@@ -10,7 +10,7 @@
     ],
     "description": "一部心理惊悚电影。",
     "poster": "posters/沉默的羔羊.1080p.BD中英双字.webp",
-    "video": "movies/沉默的羔羊.mp4"
+    "video": "movies/沉默的羔羊.mp4/沉默的羔羊.1080p.BD中英双字.mp4"
   },
   {
     "id": "Avatar: Fire and Ash",
@@ -182,449 +182,514 @@
     "video": "movies/抓娃娃/抓娃娃.2160p.60fps.HD国语中字无水印.mkv"
   },
   {
+    "id": "Pirates of the Caribbean: The Curse of the Black Pearl",
+    "type": "movie",
+    "title": "加勒比海盗：黑珍珠的诅咒",
+    "year": 2003,
+    "genres": [
+      "惊悚",
+      "剧情"
+    ],
+    "description": "一部心理惊悚电影。",
+    "poster": "posters/加勒比海盗1-黑珍珠的诅咒.webp",
+    "video": "movies/加勒比海盗/加勒比海盗：黑珍珠号的诅咒.1080p.国英双语.BD中英双字.mp4"
+  },
+  {
+    "id": "Pirates of the Caribbean: Dead Man's Chest",
+    "type": "movie",
+    "title": "加勒比海盗2：聚魂棺",
+    "year": 2006,
+    "genres": [
+      "惊悚",
+      "剧情"
+    ],
+    "description": "一部心理惊悚电影。",
+    "poster": "posters/加勒比海盗2-聚魂棺.webp",
+    "video": "movies/加勒比海盗/加勒比海盗2：聚魂棺.1080p.国英双语.BD中英双字.mp4"
+  },
+  {
+    "id": "Pirates of the Caribbean: At World's End",
+    "type": "movie",
+    "title": "加勒比海盗3：世界的尽头",
+    "year": 2007,
+    "genres": [
+      "惊悚",
+      "剧情"
+    ],
+    "description": "一部心理惊悚电影。",
+    "poster": "posters/加勒比海盗3-世界的尽头.webp",
+    "video": "movies/加勒比海盗/加勒比海盗3：世界的尽头.1080p.国英双语.BD中英双字.mp4"
+  },
+  {
+    "id": "Pirates of the Caribbean: On Stranger Tides",
+    "type": "movie",
+    "title": "加勒比海盗4：惊涛怪浪",
+    "year": 2011,
+    "genres": [
+      "惊悚",
+      "剧情"
+    ],
+    "description": "一部心理惊悚电影。",
+    "poster": "posters/加勒比海盗4-惊涛怪浪.webp",
+    "video": "movies/加勒比海盗/加勒比海盗4：惊涛怪浪.1080p.国英双语.BD中英双字.mp4"
+  },
+    {
+    "id": "Pirates of the Caribbean: Dead Men Tell No Tales",
+    "type": "movie",
+    "title": "加勒比海盗5：死无对证",
+    "year": 2017,
+    "genres": [
+      "惊悚",
+      "剧情"
+    ],
+    "description": "一部心理惊悚电影。",
+    "poster": "posters/加勒比海盗5-死无对证.webp",
+    "video": "movies/加勒比海盗/加勒比海盗5：死无对证.1080p.国英双语.BD特效中英双字.mp4"
+  },
+  {
     "id": "game-of-thrones",
     "type": "series",
     "title": "权利的游戏",
-    "year": 1991,
+    "year": 2011,
     "description": "演示条目：用于验证美剧详情和选集流程，未随站点附带视频文件。",
     "poster": "posters/权利的游戏.webp",
     "episodes": [
       {
         "season": 1,
         "episode": 1,
-        "title": "S01E01",
+        "title": "凛冬将至",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E01.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 2,
-        "title": "S01E02",
+        "title": "国王大道",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E02.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 3,
-        "title": "S01E03",
+        "title": "雪诺大人",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E03.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 4,
-        "title": "S01E04",
+        "title": "私生子和废物",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E04.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 5,
-        "title": "S01E05",
+        "title": "狼与狮",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E05.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 6,
-        "title": "S01E06",
+        "title": "黄金王冠",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E06.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 7,
-        "title": "S01E07",
+        "title": "谋士或死",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E07.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 8,
-        "title": "S01E08",
+        "title": "剑之尖端",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E08.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 9,
-        "title": "S01E09",
+        "title": "贝勒圣堂",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E09.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 1,
         "episode": 10,
-        "title": "S01E10",
+        "title": "火与血",
         "video": "series/冰与火之歌/S01/权力的游戏.Game.Of.Thrones.S01E10.中英字幕.BD.1080P-人人影视V2.mp4"
       },
       {
         "season": 2,
         "episode": 1,
-        "title": "S02E01",
+        "title": "北境不忘",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E01.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 2,
-        "title": "S02E02",
+        "title": "夜幕降临",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E02.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 3,
-        "title": "S02E03",
+        "title": "逝者永恒",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 4,
-        "title": "S02E04",
+        "title": "骸骨花园",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E04.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 5,
-        "title": "S02E05",
+        "title": "赫伦堡幽灵",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E05.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 6,
-        "title": "S02E06",
+        "title": "新旧诸神",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E06.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 7,
-        "title": "S02E07",
+        "title": "毁誉之人",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E07.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 8,
-        "title": "S02E08",
+        "title": "临冬城王子",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E08.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 9,
-        "title": "S02E09",
+        "title": "黑水河之战",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E09.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 2,
         "episode": 10,
-        "title": "S02E10",
+        "title": "凡人皆有一死",
         "video": "series/冰与火之歌/S02/权力的游戏.Game.of.Thrones.S02E10.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 1,
-        "title": "S03E01",
+        "title": "凡人皆需侍奉",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 2,
-        "title": "S03E02",
+        "title": "黑色的翅膀",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E02.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 3,
-        "title": "S03E03",
+        "title": "惩罚之旅",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 4,
-        "title": "S03E04",
+        "title": "至死方休",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E04.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 5,
-        "title": "S03E05",
+        "title": "火吻而生",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E05.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 6,
-        "title": "S03E06",
+        "title": "诸神与阶梯",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E06.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 7,
-        "title": "S03E07",
+        "title": "险难重重",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E07.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 8,
-        "title": "S03E08",
+        "title": "惊天逆转",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E08.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 9,
-        "title": "S03E09",
+        "title": "致命陷阱",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E09.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 3,
         "episode": 10,
-        "title": "S03E10",
+        "title": "君临渊凯",
         "video": "series/冰与火之歌/S03/权力的游戏.Game.of.Thrones.S03E10.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 1,
-        "title": "S04E01",
+        "title": "双刃剑",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 2,
-        "title": "S04E02",
+        "title": "皇室婚礼",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E02.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 3,
-        "title": "S04E03",
+        "title": "碎镣之人",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 4,
-        "title": "S04E04",
+        "title": "守誓之剑",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E04.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 5,
-        "title": "S04E05",
+        "title": "托曼一世",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E05.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 6,
-        "title": "S04E06",
+        "title": "先民律法",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E06.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 7,
-        "title": "S04E07",
+        "title": "知更展翅",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E07.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 8,
-        "title": "S04E08",
+        "title": "旷世之战",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E08.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 9,
-        "title": "S04E09",
+        "title": "长城守望",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E09.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 4,
         "episode": 10,
-        "title": "S04E10",
+        "title": "万生之子",
         "video": "series/冰与火之歌/S04/权力的游戏.Game.of.Thrones.S04E10.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 1,
-        "title": "S05E01",
+        "title": "战争来临",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 2,
-        "title": "S05E02",
+        "title": "黑白之院",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E02.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 3,
-        "title": "S05E03",
+        "title": "大麻雀",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 4,
-        "title": "S05E04",
+        "title": "女妖之子",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E04.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 5,
-        "title": "S05E05",
+        "title": "泯灭童稚",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E05.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 6,
-        "title": "S05E06",
+        "title": "不屈不挠",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E06.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 7,
-        "title": "S05E07",
+        "title": "礼物",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E07.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 8,
-        "title": "S05E08",
+        "title": "艰难堡",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E08.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 9,
-        "title": "S05E09",
+        "title": "魔龙狂舞",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E09.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 5,
         "episode": 10,
-        "title": "S05E10",
+        "title": "母之怜悯",
         "video": "series/冰与火之歌/S05/权力的游戏.Game.of.Thrones.S05E10.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 1,
-        "title": "S06E01",
+        "title": "红袍女巫",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 2,
-        "title": "S06E02",
+        "title": "琼恩复活",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E02.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 3,
-        "title": "S06E03",
+        "title": "破誓者",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 4,
-        "title": "S06E04",
+        "title": "陌客之书",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E04.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 5,
-        "title": "S06E05",
+        "title": "门",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E05.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 6,
-        "title": "S06E06",
+        "title": "吾血之血",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E06.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 7,
-        "title": "S06E07",
+        "title": "破碎之人",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E07.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 8,
-        "title": "S06E08",
+        "title": "无名之辈",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E08.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 9,
-        "title": "S06E09",
+        "title": "私生子之战",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E09.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 6,
         "episode": 10,
-        "title": "S06E10",
+        "title": "凛冬的寒风",
         "video": "series/冰与火之歌/S06/权力的游戏.Game.of.Thrones.S06E10.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 7,
         "episode": 1,
-        "title": "S07E01",
+        "title": "龙石岛",
         "video": "series/冰与火之歌/S07/权力的游戏.Game.of.Thrones.S07E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 7,
         "episode": 2,
-        "title": "S07E02",
+        "title": "风暴降生",
         "video": "series/冰与火之歌/S07/权力的游戏.Game.of.Thrones.S07E02.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 7,
         "episode": 3,
-        "title": "S07E03",
+        "title": "女王的正义",
         "video": "series/冰与火之歌/S07/权力的游戏.Game.of.Thrones.S07E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 7,
         "episode": 4,
-        "title": "S07E04",
+        "title": "战利品",
         "video": "series/冰与火之歌/S07/权力的游戏.Game.of.Thrones.S07E04.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 7,
         "episode": 5,
-        "title": "S07E05",
+        "title": "东海望",
         "video": "series/冰与火之歌/S07/权力的游戏.Game.of.Thrones.S07E05.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 7,
         "episode": 6,
-        "title": "S07E06",
+        "title": "长城以北",
         "video": "series/冰与火之歌/S07/权力的游戏.Game.of.Thrones.S07E06.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 7,
         "episode": 7,
-        "title": "S07E07",
+        "title": "龙与狼",
         "video": "series/冰与火之歌/S07/权力的游戏.Game.of.Thrones.S07E07.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 8,
         "episode": 1,
-        "title": "S08E01",
+        "title": "临冬城",
         "video": "series/冰与火之歌/S08/权力的游戏.Game.of.Thrones.S08E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 8,
         "episode": 2,
-        "title": "S08E02",
+        "title": "七国骑士",
         "video": "series/冰与火之歌/S08/权力的游戏.Game.of.Thrones.S08E02.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 8,
         "episode": 3,
-        "title": "S08E03",
+        "title": "长夜",
         "video": "series/冰与火之歌/S08/权力的游戏.Game.of.Thrones.S08E03.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 8,
         "episode": 4,
-        "title": "S08E04",
+        "title": "最后的史塔克",
         "video": "series/冰与火之歌/S08/权力的游戏.Game.of.Thrones.S08E04.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 8,
         "episode": 5,
-        "title": "S08E05",
+        "title": "钟声",
         "video": "series/冰与火之歌/S08/权力的游戏.Game.of.Thrones.S08E05.中英字幕.BD.1080P-人人影视.mp4"
       },
       {
         "season": 8,
         "episode": 6,
-        "title": "S08E06",
+        "title": "铁王座",
         "video": "series/冰与火之歌/S08/权力的游戏.Game.of.Thrones.S08E06.中英字幕.BD.1080P-人人影视.mp4"
       }
     ]
@@ -710,175 +775,175 @@
       {
         "season": 1,
         "episode": 1,
-        "title": "S01E01",
+        "title": "自由日",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E01.Freedom.Day.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 1,
         "episode": 2,
-        "title": "S01E02",
+        "title": "霍斯顿的选择",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E02.Holstons.Pick.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 1,
         "episode": 3,
-        "title": "S01E03",
+        "title": "机器",
         "video": "series/羊毛战记/S1/羊毛战记.silo.s01e03.1080p.HD中英双字[最新电影www.dygangs.me].mp4'"
       },
       {
         "season": 1,
         "episode": 4,
-        "title": "S01E04",
+        "title": "真相",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E04.Truth.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 1,
         "episode": 5,
-        "title": "S01E05",
+        "title": "清理工的儿子",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E05.The.Janitors.Boy.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 1,
         "episode": 6,
-        "title": "S01E06",
+        "title": "遗物",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E06.The.Relic.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 1,
         "episode": 7,
-        "title": "S01E07",
+        "title": "火种守护者",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E07.The.Flamekeepers.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 1,
         "episode": 8,
-        "title": "S01E08",
+        "title": "汉娜",
         "video": "series/羊毛战记/S1/羊毛战记.silo.s01e08.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 1,
         "episode": 9,
-        "title": "S01E09",
+        "title": "逃离",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E09.The.Getaway.1080p.HD中英双字[66影视www.66Ys.Co].mp4"
       },
       {
         "season": 1,
         "episode": 10,
-        "title": "S01E10",
+        "title": "外面",
         "video": "series/羊毛战记/S1/羊毛战记.Silo.S01E10.Outside.1080p.HD中英双字[66影视www.66Ys.Co].mp4"
       },
       {
         "season": 2,
         "episode": 1,
-        "title": "S02E01",
+        "title": "工程师",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E01.The.Engineer.1080p.HD中英双字[电影港www.dygangs.me].mp4"
       },
       {
         "season": 2,
         "episode": 2,
-        "title": "S02E02",
+        "title": "秩序",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E02.Order.1080p.HD中英双字[电影港www.dygangs.me].mp4"
       },
       {
         "season": 2,
         "episode": 3,
-        "title": "S02E03",
+        "title": "索罗",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E03.Solo.1080p.HD中英双字[电影港www.dygangs.me].mp4"
       },
       {
         "season": 2,
         "episode": 4,
-        "title": "S02E04",
+        "title": "和谐",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E04.The.Harmonium.1080p.HD中英双字[最新电影www.dygangs.me].mp4"
       },
       {
         "season": 2,
         "episode": 5,
-        "title": "S02E05",
+        "title": "下坠",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E05.Descent.1080p.HD中英双字[电影港www.dygangs.me].mp4"
       },
       {
         "season": 2,
         "episode": 6,
-        "title": "S02E06",
+        "title": "路障",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E06.Barricades.1080p.HD中英双字[电影港www.dygangs.me].mp4"
       },
       {
         "season": 2,
         "episode": 7,
-        "title": "S02E07",
+        "title": "潜入",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E07.The.Dive.1080p.HD中英双字[最新电影www.5266ys.com].mp4"
       },
       {
         "season": 2,
         "episode": 8,
-        "title": "S02E08",
+        "title": "奎因之书",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E08.The.Book.of.Quinn.1080p.HD中英双字[最新电影www.5266ys.com].mp4"
       },
       {
         "season": 2,
         "episode": 9,
-        "title": "S02E09",
+        "title": "保护程序",
         "video": "series/羊毛战记/S2/末日地堡.silo.s02e09.1080p.HD中英双字[最新电影www.5266ys.com].mp4"
       },
       {
         "season": 2,
         "episode": 10,
-        "title": "S02E10",
+        "title": "走进烈火",
         "video": "series/羊毛战记/S2/末日地堡.Silo.S02E10.Into.the.Fire.1080p.HD中英双字[最新电影www.5266ys.com].mp4"
       },
       {
         "season": 3,
         "episode": 1,
-        "title": "S03E01",
+        "title": "你是谁?",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E01.Who.Are.You.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 2,
-        "title": "S03E02",
+        "title": "一切都好",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E02.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 3,
-        "title": "S03E03",
+        "title": "暗网",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E03.A.Dark.Web.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 4,
-        "title": "S03E04",
+        "title": "无论如何，别回家",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E04.Whatever.You.Do.Dont.Go.Home.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 5,
-        "title": "S03E05",
+        "title": "记忆",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E05.Memory.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 6,
-        "title": "S03E06",
+        "title": "硬盘",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E06.The.Drive.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 7,
-        "title": "S03E07",
+        "title": "无线电",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E07.Radio.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 8,
-        "title": "S03E08",
+        "title": "纳米危机",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E08.Gray.Goo.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       },
       {
         "season": 3,
         "episode": 9,
-        "title": "S03E09",
+        "title": "告别",
         "video": "series/羊毛战记/S3/末日地堡.Silo.S03E09.Farewell.1080p.HD中英双字[最新电影www.dyg7.com].mp4"
       }
     ]
