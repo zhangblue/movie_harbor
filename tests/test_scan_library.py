@@ -11,22 +11,88 @@ from scan_library import main, scan_catalog
 
 
 class ScanCatalogTests(unittest.TestCase):
-    def test_scan_catalog_adds_movie_and_series_without_overwriting_manual_fields(self):
+    def test_scan_catalog_keeps_a_legacy_movie_id_matched_by_existing_video_path(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             media = Path(temp_dir) / "movie_resources"
             (media / "movies").mkdir(parents=True)
             (media / "series" / "示例剧").mkdir(parents=True)
             (media / "movies" / "新电影.mp4").touch()
             (media / "series" / "示例剧" / "S01E02.mp4").touch()
-            catalog = [{"id": "new-movie", "type": "movie", "title": "人工片名", "description": "保留", "video": None}]
+            catalog = [{"id": "人工-id", "type": "movie", "title": "人工片名", "description": "保留", "video": "movies/新电影.mp4"}]
 
             updated = scan_catalog(media, catalog)
 
-            movie = next(item for item in updated if item["id"] == "new-movie")
+            movie = next(item for item in updated if item["id"] == "人工-id")
             self.assertEqual(movie["title"], "人工片名")
             self.assertEqual(movie["description"], "保留")
             self.assertEqual(movie["video"], "movies/新电影.mp4")
+            self.assertEqual(len([item for item in updated if item["type"] == "movie"]), 1)
             self.assertEqual(next(item for item in updated if item["type"] == "series")["episodes"][0]["season"], 1)
+
+    def test_scan_catalog_keeps_a_legacy_series_id_matched_by_episode_path(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            media = Path(temp_dir) / "movie_resources"
+            (media / "series" / "中文剧").mkdir(parents=True)
+            (media / "series" / "中文剧" / "S01E02.mp4").touch()
+            catalog = [{
+                "id": "人工-series-id",
+                "type": "series",
+                "title": "人工剧名",
+                "description": "保留",
+                "episodes": [{"season": 1, "episode": 2, "title": "人工集名", "video": "series/中文剧/S01E02.mp4"}],
+            }]
+
+            updated = scan_catalog(media, catalog)
+
+            self.assertEqual(len(updated), 1)
+            self.assertEqual(updated[0]["id"], "人工-series-id")
+            self.assertEqual(updated[0]["description"], "保留")
+            self.assertEqual(updated[0]["episodes"][0]["title"], "人工集名")
+
+    def test_scan_catalog_uses_distinct_category_prefixed_ids_for_same_movie_and_series_name(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            media = Path(temp_dir) / "movie_resources"
+            (media / "movies").mkdir(parents=True)
+            (media / "series" / "Foo").mkdir(parents=True)
+            (media / "movies" / "Foo.mp4").touch()
+            (media / "series" / "Foo" / "S01E01.mp4").touch()
+
+            updated = scan_catalog(media, [])
+
+            self.assertEqual({item["id"] for item in updated}, {"movie-foo", "series-foo"})
+            self.assertEqual(len(updated), len({item["id"] for item in updated}))
+
+    def test_scan_catalog_rejects_duplicate_catalog_ids_before_the_frontend_can_receive_them(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            media = Path(temp_dir) / "movie_resources"
+            duplicate_ids = [
+                {"id": "same", "type": "movie", "title": "Film", "video": None},
+                {"id": "same", "type": "series", "title": "Show", "episodes": []},
+            ]
+
+            with self.assertRaisesRegex(ValueError, "duplicate catalog id"):
+                scan_catalog(media, duplicate_ids)
+
+    def test_scan_catalog_rejects_duplicate_or_invalid_existing_episode_numbers(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            media = Path(temp_dir) / "movie_resources"
+            (media / "series" / "show").mkdir(parents=True)
+            duplicated = [{
+                "id": "show", "type": "series", "title": "Show",
+                "episodes": [
+                    {"season": 1, "episode": 1, "video": None},
+                    {"season": 1, "episode": 1, "video": None},
+                ],
+            }]
+            invalid = [{
+                "id": "show", "type": "series", "title": "Show",
+                "episodes": [{"season": 0, "episode": 1, "video": None}],
+            }]
+
+            with self.assertRaisesRegex(ValueError, "duplicate episode"):
+                scan_catalog(media, duplicated)
+            with self.assertRaisesRegex(ValueError, "invalid episode"):
+                scan_catalog(media, invalid)
 
     def test_scan_catalog_clears_missing_videos_but_keeps_existing_entries(self):
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -61,17 +127,17 @@ class ScanCatalogTests(unittest.TestCase):
             (media / "movies" / "Manual Film.mp4").touch()
             (media / "series" / "Unmarked Show" / "beta.mov").touch()
             (media / "series" / "Unmarked Show" / "alpha.mp4").touch()
-            (media / "posters" / "poster-film.webp").touch()
-            (media / "posters" / "poster-film.png").touch()
-            (media / "posters" / "poster-film.jpg").touch()
+            (media / "posters" / "movie-poster-film.webp").touch()
+            (media / "posters" / "movie-poster-film.png").touch()
+            (media / "posters" / "movie-poster-film.jpg").touch()
             (media / "posters" / "manual-film.jpg").touch()
 
             updated = scan_catalog(media, [
-                {"id": "manual-film", "type": "movie", "title": "人工海报", "poster": "manual-poster.png", "video": None},
+                {"id": "manual-film", "type": "movie", "title": "人工海报", "poster": "manual-poster.png", "video": "movies/Manual Film.mp4"},
             ])
 
-            film = next(item for item in updated if item["id"] == "poster-film")
-            self.assertEqual(film["poster"], "posters/poster-film.jpg")
+            film = next(item for item in updated if item["id"] == "movie-poster-film")
+            self.assertEqual(film["poster"], "posters/movie-poster-film.jpg")
             manual_film = next(item for item in updated if item["id"] == "manual-film")
             self.assertEqual(manual_film["poster"], "manual-poster.png")
             series = next(item for item in updated if item["type"] == "series")
@@ -97,7 +163,7 @@ class ScanCatalogTests(unittest.TestCase):
                 sys.argv = old_argv
 
             catalog = json.loads((root / "data" / "movies.json").read_text(encoding="utf-8"))
-            self.assertEqual(catalog[0]["id"], "cli-film")
+            self.assertEqual(catalog[0]["id"], "movie-cli-film")
             self.assertEqual(catalog[0]["video"], "movies/CLI Film.mov")
 
 
