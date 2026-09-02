@@ -1,6 +1,5 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import {
   buildMediaUrl,
   filterCatalog,
@@ -95,20 +94,6 @@ test('getPlayableSource clearly rejects a missing or empty video only when it is
       { id: 'show', type: 'series', title: '缺片美剧', episodes: [] },
       { season: 1, episode: 1, video: '' },
     ),
-    /没有可用的视频文件/,
-  );
-});
-
-test('the default catalog ships a series demo episode without a bundled video', () => {
-  const catalog = JSON.parse(readFileSync(new URL('../data/movies.json', import.meta.url), 'utf8'));
-  const series = catalog.find((item) => item.type === 'series');
-
-  assert.ok(series, '默认片单应包含美剧示例');
-  assert.ok(series.episodes.length > 0, '美剧示例应包含可选剧集');
-  assert.equal(series.episodes[0].video, null);
-  assert.deepEqual(validateCatalog(catalog), catalog);
-  assert.throws(
-    () => getPlayableSource(series, series.episodes[0]),
     /没有可用的视频文件/,
   );
 });

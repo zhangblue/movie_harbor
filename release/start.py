@@ -101,15 +101,16 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             remaining -= len(chunk)
 
 
-def create_server(root: Path, port: int) -> ThreadingHTTPServer:
-    """Return a loopback-only static server rooted at *root*."""
+def create_server(root: Path, host: str, port: int) -> ThreadingHTTPServer:
+    """Return a static server rooted at *root* and bound to *host*."""
     handler = partial(RangeRequestHandler, directory=str(root))
-    return ThreadingHTTPServer(("127.0.0.1", port), handler)
+    return ThreadingHTTPServer((host, port), handler)
 
 
 def parse_args(arguments: Optional[list[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Serve a local media library release.")
-    parser.add_argument("--port", type=int, default=8000, help="Loopback port to listen on (default: 8000)")
+    parser.add_argument("--host", default="127.0.0.1", help="Address to listen on (default: 127.0.0.1)")
+    parser.add_argument("--port", type=int, default=8000, help="Port to listen on (default: 8000)")
     parser.add_argument("--no-browser", action="store_true", help="Do not open the site in a browser")
     return parser.parse_args(arguments)
 
@@ -117,8 +118,9 @@ def parse_args(arguments: Optional[list[str]] = None) -> argparse.Namespace:
 def main() -> None:
     arguments = parse_args()
     release_root = Path(__file__).resolve().parent
-    server = create_server(release_root, arguments.port)
-    url = f"http://127.0.0.1:{server.server_port}"
+    server = create_server(release_root, arguments.host, arguments.port)
+    display_host = "127.0.0.1" if arguments.host == "0.0.0.0" else arguments.host
+    url = f"http://{display_host}:{server.server_port}"
     print(f"Serving release at {url}")
     if not arguments.no_browser:
         webbrowser.open(url)

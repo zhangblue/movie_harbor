@@ -19,6 +19,14 @@ python3 release/start.py
 python3 release/start.py --no-browser --port 8010
 ```
 
+局域网共享时显式监听所有网卡：
+
+```bash
+python3 release/start.py --host 0.0.0.0 --no-browser
+```
+
+然后在同一局域网设备中访问 `http://<本机局域网-IP>:8000`。请仅在可信局域网使用，并在 macOS 防火墙中允许 Python 的入站连接。
+
 不要使用 `python3 -m http.server` 播放视频；它不提供本项目所需的 Range 分段处理。
 
 ## 工程结构
