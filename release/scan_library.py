@@ -26,7 +26,10 @@ def parse_episode(filename: str) -> Optional[Tuple[int, int]]:
     match = EPISODE_PATTERN.search(filename)
     if match is None:
         return None
-    return int(match.group(1)), int(match.group(2))
+    season, episode = int(match.group(1)), int(match.group(2))
+    if season < 1 or episode < 1:
+        raise ValueError(f"invalid episode number in {filename}")
+    return season, episode
 
 
 def _media_files(directory: Path) -> list[Path]:
@@ -57,7 +60,11 @@ def _with_poster(item: dict, media_root: Path) -> dict:
 def _scan_movies(media_root: Path, existing: dict[str, dict]) -> list[dict]:
     scanned: dict[str, str] = {}
     for path in _media_files(media_root / "movies"):
-        scanned[make_id(f"movie-{path.stem}")] = f"movies/{path.name}"
+        scanned_id = make_id(f"movie-{path.stem}")
+        video = f"movies/{path.name}"
+        if scanned_id in scanned:
+            raise ValueError(f"conflicting movie files for {scanned_id}: {scanned[scanned_id]} and {video}")
+        scanned[scanned_id] = video
 
     movies: list[dict] = []
     unmatched = dict(existing)
@@ -93,7 +100,10 @@ def _episodes_for(directory: Optional[Path], existing_episodes: list[dict]) -> l
         if parsed is None:
             unmarked.append(path)
         else:
-            scanned[parsed] = f"series/{directory.name}/{path.name}"
+            video = f"series/{directory.name}/{path.name}"
+            if parsed in scanned:
+                raise ValueError(f"conflicting episode files for S{parsed[0]:02d}E{parsed[1]:02d}: {scanned[parsed]} and {video}")
+            scanned[parsed] = video
     next_episode = 1
     while (1, next_episode) in scanned:
         next_episode += 1

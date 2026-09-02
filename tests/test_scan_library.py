@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "release"))
 
-from scan_library import main, scan_catalog
+from scan_library import main, parse_episode, scan_catalog
 
 
 class ScanCatalogTests(unittest.TestCase):
@@ -72,6 +72,32 @@ class ScanCatalogTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "duplicate catalog id"):
                 scan_catalog(media, duplicate_ids)
+
+    def test_scan_catalog_rejects_movies_with_the_same_normalized_id_and_names_both_files(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            media = Path(temp_dir) / "movie_resources"
+            (media / "movies").mkdir(parents=True)
+            (media / "movies" / "Foo.mp4").touch()
+            (media / "movies" / "Foo.webm").touch()
+
+            with self.assertRaisesRegex(ValueError, r"Foo\.mp4.*Foo\.webm"):
+                scan_catalog(media, [])
+
+    def test_scan_catalog_rejects_files_with_the_same_season_and_episode_and_names_both_files(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            media = Path(temp_dir) / "movie_resources"
+            (media / "series" / "Show").mkdir(parents=True)
+            (media / "series" / "Show" / "S01E01.mp4").touch()
+            (media / "series" / "Show" / "S01E01.webm").touch()
+
+            with self.assertRaisesRegex(ValueError, r"S01E01\.mp4.*S01E01\.webm"):
+                scan_catalog(media, [])
+
+    def test_parse_episode_rejects_zero_season_or_episode(self):
+        with self.assertRaisesRegex(ValueError, "S00E01.mp4"):
+            parse_episode("S00E01.mp4")
+        with self.assertRaisesRegex(ValueError, "S01E00.webm"):
+            parse_episode("S01E00.webm")
 
     def test_scan_catalog_rejects_duplicate_or_invalid_existing_episode_numbers(self):
         with tempfile.TemporaryDirectory() as temp_dir:
