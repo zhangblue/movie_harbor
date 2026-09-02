@@ -180,11 +180,13 @@ def scan_catalog(media_root: Path, catalog: list[dict]) -> list[dict]:
     return _scan_movies(media_root, movie_items) + _scan_series(media_root, series_items) + other_items
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Synchronize a release movie catalog with local media files.")
-    parser.add_argument("--root", type=Path, default=Path("release/"), help="Release directory containing config.json and data/movies.json")
-    args = parser.parse_args()
-    root = args.root
+def main(root: Optional[Path] = None) -> None:
+    """Synchronize the catalog at *root*, or parse ``--root`` for CLI use."""
+    if root is None:
+        parser = argparse.ArgumentParser(description="Synchronize a release movie catalog with local media files.")
+        parser.add_argument("--root", type=Path, default=Path("release/"), help="Release directory containing config.json and data/movies.json")
+        args = parser.parse_args()
+        root = args.root
     config = json.loads((root / "config.json").read_text(encoding="utf-8"))
     catalog_path = root / "data" / "movies.json"
     catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
